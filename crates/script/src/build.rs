@@ -4,7 +4,8 @@ use crate::{
 };
 use alloy_primitives::{Bytes, B256};
 use alloy_provider::Provider;
-use eyre::{OptionExt, Result};
+use eyre::{ContextCompat, OptionExt, Result};
+use foundry_compilers::info::ContractInfo;
 use forge_script_sequence::ScriptSequence;
 use foundry_cheatcodes::Wallets;
 use foundry_common::{
@@ -164,6 +165,26 @@ impl PreprocessedState {
     pub fn compile(self) -> Result<CompiledState> {
         let Self { args, script_config, script_wallets } = self;
         let project = script_config.config.project()?;
+
+        // If --save-standard-json is set, print the standard json input before compilation
+        if args.save_standard_json {
+            let target_path = if let Ok(path) = dunce::canonicalize(&args.path) {
+                path
+            } else {
+                let contract = ContractInfo::from_str(&args.path)?;
+                if let Some(path) = contract.path {
+                    dunce::canonicalize(path)?
+                } else {
+                    project.find_contract_path(contract.name.as_str())?
+                }
+            };
+            
+            let input = project
+                .standard_json_input(&target_path)
+                .wrap_err("Failed to get standard json input")?;
+            
+            sh_println!("{}", serde_json::to_string(&input)?)?;
+        }
 
         let mut target_name = args.target_contract.clone();
 

@@ -128,6 +128,10 @@ pub struct ScriptArgs {
     #[arg(long)]
     pub skip_simulation: bool,
 
+    /// Print the standard json input used for compilation.
+    #[arg(long)]
+    pub save_standard_json: bool,
+
     /// Relative percentage to multiply gas estimates by.
     #[arg(long, short, default_value = "130")]
     pub gas_estimate_multiplier: u64,
