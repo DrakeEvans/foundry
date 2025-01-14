@@ -37,6 +37,8 @@ pub struct ScriptSequence {
     pub timestamp: u64,
     pub chain: u64,
     pub commit: Option<String>,
+    /// The standard JSON input used for compilation, if --save-standard-json was enabled
+    pub standard_json: Option<String>,
 }
 
 /// Sensitive values from the transactions in a script sequence

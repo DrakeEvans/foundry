@@ -216,6 +216,11 @@ pub struct ScriptArgs {
 
     #[command(flatten)]
     pub retry: RetryArgs,
+
+    /// Save the complete standard-json which is generated prior to compilation in the broadcast
+    /// files.
+    #[arg(long)]
+    pub save_standard_json: bool,
 }
 
 impl ScriptArgs {

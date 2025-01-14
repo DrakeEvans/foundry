@@ -672,7 +672,7 @@ ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.
 
 forgetest_async!(can_deploy_script_without_lib, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .load_private_keys(&[0, 1])
@@ -686,7 +686,7 @@ forgetest_async!(can_deploy_script_without_lib, |prj, cmd| {
 
 forgetest_async!(can_deploy_script_with_lib, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .load_private_keys(&[0, 1])
@@ -700,7 +700,7 @@ forgetest_async!(can_deploy_script_with_lib, |prj, cmd| {
 
 forgetest_async!(can_deploy_script_private_key, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .load_addresses(&[Address::from_str("0x90F79bf6EB2c4f870365E785982E1f101E93b906").unwrap()])
@@ -717,7 +717,7 @@ forgetest_async!(can_deploy_script_private_key, |prj, cmd| {
 
 forgetest_async!(can_deploy_unlocked, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .sender("0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266".parse().unwrap())
@@ -729,7 +729,7 @@ forgetest_async!(can_deploy_unlocked, |prj, cmd| {
 
 forgetest_async!(can_deploy_script_remember_key, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .load_addresses(&[Address::from_str("0x90F79bf6EB2c4f870365E785982E1f101E93b906").unwrap()])
@@ -746,7 +746,7 @@ forgetest_async!(can_deploy_script_remember_key, |prj, cmd| {
 
 forgetest_async!(can_deploy_script_remember_key_and_resume, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .add_deployer(0)
@@ -770,7 +770,7 @@ forgetest_async!(can_deploy_script_remember_key_and_resume, |prj, cmd| {
 
 forgetest_async!(can_resume_script, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .load_private_keys(&[0])
@@ -788,7 +788,7 @@ forgetest_async!(can_resume_script, |prj, cmd| {
 
 forgetest_async!(can_deploy_broadcast_wrap, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .add_deployer(2)
@@ -803,7 +803,7 @@ forgetest_async!(can_deploy_broadcast_wrap, |prj, cmd| {
 
 forgetest_async!(panic_no_deployer_set, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .load_private_keys(&[0, 1])
@@ -815,7 +815,7 @@ forgetest_async!(panic_no_deployer_set, |prj, cmd| {
 
 forgetest_async!(can_deploy_no_arg_broadcast, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .add_deployer(0)
@@ -830,7 +830,7 @@ forgetest_async!(can_deploy_no_arg_broadcast, |prj, cmd| {
 
 forgetest_async!(can_deploy_with_create2, |prj, cmd| {
     let (api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     // Prepare CREATE2 Deployer
     api.anvil_set_code(
@@ -855,7 +855,7 @@ forgetest_async!(can_deploy_with_create2, |prj, cmd| {
 
 forgetest_async!(can_deploy_with_custom_create2, |prj, cmd| {
     let (api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
     let create2 = Address::from_str("0x0000000000000000000000000000000000b4956c").unwrap();
 
     // Prepare CREATE2 Deployer
@@ -881,7 +881,7 @@ forgetest_async!(can_deploy_with_custom_create2, |prj, cmd| {
 
 forgetest_async!(can_deploy_with_custom_create2_notmatched_bytecode, |prj, cmd| {
     let (api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
     let create2 = Address::from_str("0x0000000000000000000000000000000000b4956c").unwrap();
 
     // Prepare CREATE2 Deployer
@@ -904,7 +904,7 @@ forgetest_async!(can_deploy_with_custom_create2_notmatched_bytecode, |prj, cmd| 
 
 forgetest_async!(canot_deploy_with_nonexist_create2, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
     let create2 = Address::from_str("0x0000000000000000000000000000000000b4956c").unwrap();
 
     tester
@@ -919,7 +919,7 @@ forgetest_async!(canot_deploy_with_nonexist_create2, |prj, cmd| {
 
 forgetest_async!(can_deploy_and_simulate_25_txes_concurrently, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .load_private_keys(&[0])
@@ -933,7 +933,7 @@ forgetest_async!(can_deploy_and_simulate_25_txes_concurrently, |prj, cmd| {
 
 forgetest_async!(can_deploy_and_simulate_mixed_broadcast_modes, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .load_private_keys(&[0])
@@ -947,7 +947,7 @@ forgetest_async!(can_deploy_and_simulate_mixed_broadcast_modes, |prj, cmd| {
 
 forgetest_async!(deploy_with_setup, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .load_private_keys(&[0])
@@ -961,7 +961,7 @@ forgetest_async!(deploy_with_setup, |prj, cmd| {
 
 forgetest_async!(fail_broadcast_staticcall, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .load_private_keys(&[0])
@@ -972,7 +972,7 @@ forgetest_async!(fail_broadcast_staticcall, |prj, cmd| {
 
 forgetest_async!(check_broadcast_log, |prj, cmd| {
     let (api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     // Prepare CREATE2 Deployer
     let addr = Address::from_str("0x4e59b44847b379578588920ca78fbf26c0b4956c").unwrap();
@@ -1043,7 +1043,7 @@ forgetest_async!(check_broadcast_log, |prj, cmd| {
 
 forgetest_async!(test_default_sender_balance, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     // Expect the default sender to have uint256.max balance.
     tester
@@ -1053,7 +1053,7 @@ forgetest_async!(test_default_sender_balance, |prj, cmd| {
 
 forgetest_async!(test_custom_sender_balance, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     // Expect the sender to have its starting balance.
     tester
@@ -1365,13 +1365,13 @@ result: uint256 255
 });
 
 forgetest_async!(can_run_script_with_empty_setup, |prj, cmd| {
-    let mut tester = ScriptTester::new_broadcast_without_endpoint(cmd, prj.root());
+    let mut tester = ScriptTester::new_broadcast_without_endpoint(&mut cmd, prj.root());
 
     tester.add_sig("BroadcastEmptySetUp", "run()").simulate(ScriptOutcome::OkNoEndpoint);
 });
 
 forgetest_async!(does_script_override_correctly, |prj, cmd| {
-    let mut tester = ScriptTester::new_broadcast_without_endpoint(cmd, prj.root());
+    let mut tester = ScriptTester::new_broadcast_without_endpoint(&mut cmd, prj.root());
 
     tester.add_sig("CheckOverrides", "run()").simulate(ScriptOutcome::OkNoEndpoint);
 });
@@ -1462,6 +1462,57 @@ Script ran successfully.
 If you wish to simulate on-chain transactions pass a RPC URL.
 
 "#]]);
+});
+
+forgetest_async!(can_save_standard_json_in_broadcast, |prj, cmd| {
+    let (_api, handle) = spawn(NodeConfig::test()).await;
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
+    tester.simulate(ScriptOutcome::OkSimulation);
+
+    // Add a simple script that we'll use to test standard-json saving
+    let script = prj
+        .add_source(
+            "StandardJson",
+            r#"
+contract Demo {
+    event log_string(string);
+    function run() external {
+        emit log_string("script ran");
+    }
+}
+"#,
+        )
+        .unwrap();
+
+    // Run the script with --save-standard-json
+    cmd.forge_fuse()
+        .arg("script")
+        .arg(script)
+        .arg("--save-standard-json")
+        .args([
+            "--broadcast",
+            "--private-key",
+            "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+        ])
+        .assert_success();
+
+    // Find and read the broadcast file
+    let run_latest = foundry_common::fs::json_files(&prj.root().join("broadcast"))
+        .find(|file| file.ends_with("run-latest.json"))
+        .expect("No broadcast artifacts");
+
+    let content = foundry_common::fs::read_to_string(run_latest).unwrap();
+    let json: serde_json::Value = serde_json::from_str(&content).unwrap();
+
+    // Verify that standard-json exists and has expected structure
+    assert!(json.get("standard_json").is_some(), "standard_json field missing from broadcast file");
+    let standard_json = json.get("standard_json").unwrap().as_str().unwrap();
+    let parsed: serde_json::Value = serde_json::from_str(standard_json).unwrap();
+
+    // Basic validation of standard-json structure
+    assert!(parsed.get("language").is_some(), "language field missing from standard-json");
+    assert!(parsed.get("sources").is_some(), "sources field missing from standard-json");
+    assert!(parsed.get("settings").is_some(), "settings field missing from standard-json");
 });
 
 forgetest_async!(assert_can_create_multiple_contracts_with_correct_nonce, |prj, cmd| {
@@ -1598,7 +1649,7 @@ If you wish to simulate on-chain transactions pass a RPC URL.
 
 forgetest_async!(assert_can_resume_with_additional_contracts, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .add_deployer(0)
@@ -1656,7 +1707,7 @@ contract ScriptC {{}}
     )
     .unwrap();
 
-    let mut tester = ScriptTester::new(cmd, None, prj.root(), "script/B.sol");
+    let mut tester = ScriptTester::new(&mut cmd, None, prj.root(), "script/B.sol");
     tester.cmd.forge_fuse().args(["script", "script/B.sol"]);
     tester.simulate(ScriptOutcome::OkNoEndpoint);
 });
@@ -1664,7 +1715,7 @@ contract ScriptC {{}}
 forgetest_async!(can_sign_with_script_wallet_single, |prj, cmd| {
     foundry_test_utils::util::initialize(prj.root());
 
-    let mut tester = ScriptTester::new_broadcast_without_endpoint(cmd, prj.root());
+    let mut tester = ScriptTester::new_broadcast_without_endpoint(&mut cmd, prj.root());
     tester
         .add_sig("ScriptSign", "run()")
         .load_private_keys(&[0])
@@ -1673,7 +1724,7 @@ forgetest_async!(can_sign_with_script_wallet_single, |prj, cmd| {
 });
 
 forgetest_async!(can_sign_with_script_wallet_multiple, |prj, cmd| {
-    let mut tester = ScriptTester::new_broadcast_without_endpoint(cmd, prj.root());
+    let mut tester = ScriptTester::new_broadcast_without_endpoint(&mut cmd, prj.root());
     let acc = tester.accounts_pub[0].to_checksum(None);
     tester
         .add_sig("ScriptSign", "run(address)")
@@ -2130,7 +2181,7 @@ Script ran successfully.
 forgetest_async!(can_deploy_library_create2, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
 
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .load_private_keys(&[0, 1])
@@ -2158,7 +2209,7 @@ forgetest_async!(can_deploy_library_create2, |prj, cmd| {
 forgetest_async!(can_deploy_library_create2_different_sender, |prj, cmd| {
     let (_api, handle) = spawn(NodeConfig::test()).await;
 
-    let mut tester = ScriptTester::new_broadcast(cmd, &handle.http_endpoint(), prj.root());
+    let mut tester = ScriptTester::new_broadcast(&mut cmd, &handle.http_endpoint(), prj.root());
 
     tester
         .load_private_keys(&[0, 1])

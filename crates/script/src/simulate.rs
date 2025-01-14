@@ -450,6 +450,7 @@ impl FilledTransactionsState {
             libraries,
             chain,
             commit,
+            standard_json: None,
         };
         Ok(sequence)
     }
