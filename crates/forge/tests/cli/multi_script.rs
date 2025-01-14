@@ -6,7 +6,7 @@ use foundry_test_utils::{ScriptOutcome, ScriptTester};
 forgetest_async!(can_deploy_multi_chain_script_without_lib, |prj, cmd| {
     let (api1, handle1) = spawn(NodeConfig::test()).await;
     let (api2, handle2) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast_without_endpoint(cmd, prj.root());
+    let mut tester = ScriptTester::new_broadcast_without_endpoint(&mut cmd, prj.root());
 
     tester
         .load_private_keys(&[0, 1])
@@ -25,7 +25,7 @@ forgetest_async!(can_deploy_multi_chain_script_without_lib, |prj, cmd| {
 forgetest_async!(can_not_deploy_multi_chain_script_with_lib, |prj, cmd| {
     let (_, handle1) = spawn(NodeConfig::test()).await;
     let (_, handle2) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast_without_endpoint(cmd, prj.root());
+    let mut tester = ScriptTester::new_broadcast_without_endpoint(&mut cmd, prj.root());
 
     tester
         .load_private_keys(&[0, 1])
@@ -39,7 +39,7 @@ forgetest_async!(can_not_deploy_multi_chain_script_with_lib, |prj, cmd| {
 forgetest_async!(can_not_change_fork_during_broadcast, |prj, cmd| {
     let (_, handle1) = spawn(NodeConfig::test()).await;
     let (_, handle2) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast_without_endpoint(cmd, prj.root());
+    let mut tester = ScriptTester::new_broadcast_without_endpoint(&mut cmd, prj.root());
 
     tester
         .load_private_keys(&[0, 1])
@@ -53,7 +53,7 @@ forgetest_async!(can_not_change_fork_during_broadcast, |prj, cmd| {
 forgetest_async!(can_resume_multi_chain_script, |prj, cmd| {
     let (_, handle1) = spawn(NodeConfig::test()).await;
     let (_, handle2) = spawn(NodeConfig::test()).await;
-    let mut tester = ScriptTester::new_broadcast_without_endpoint(cmd, prj.root());
+    let mut tester = ScriptTester::new_broadcast_without_endpoint(&mut cmd, prj.root());
 
     tester
         .add_sig("MultiChainBroadcastNoLink", "deploy(string memory,string memory)")

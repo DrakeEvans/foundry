@@ -39,29 +39,29 @@ fn init_script_cmd(
     }
 }
 /// A helper struct to test forge script scenarios
-pub struct ScriptTester {
+pub struct ScriptTester<'a> {
     pub accounts_pub: Vec<Address>,
     pub accounts_priv: Vec<String>,
     pub provider: Option<RetryProvider>,
     pub nonces: BTreeMap<u32, u64>,
     pub address_nonces: BTreeMap<Address, u64>,
-    pub cmd: TestCommand,
+    pub cmd: &'a mut TestCommand,
     pub project_root: PathBuf,
     pub target_contract: String,
     pub endpoint: Option<String>,
 }
 
-impl ScriptTester {
+impl<'a> ScriptTester<'a> {
     /// Creates a new instance of a Tester for the given contract
     pub fn new(
-        mut cmd: TestCommand,
+        cmd: &'a mut TestCommand,
         endpoint: Option<&str>,
         project_root: &Path,
         target_contract: &str,
     ) -> Self {
         init_tracing();
         Self::copy_testdata(project_root).unwrap();
-        init_script_cmd(&mut cmd, project_root, target_contract, endpoint);
+        init_script_cmd(cmd, project_root, target_contract, endpoint);
 
         let mut provider = None;
         if let Some(endpoint) = endpoint {
@@ -91,7 +91,7 @@ impl ScriptTester {
 
     /// Creates a new instance of a Tester for the `broadcast` test at the given `project_root` by
     /// configuring the `TestCommand` with script
-    pub fn new_broadcast(cmd: TestCommand, endpoint: &str, project_root: &Path) -> Self {
+    pub fn new_broadcast(cmd: &'a mut TestCommand, endpoint: &str, project_root: &Path) -> Self {
         let target_contract = project_root.join(BROADCAST_TEST_PATH).to_string_lossy().to_string();
 
         // copy the broadcast test
@@ -106,7 +106,7 @@ impl ScriptTester {
 
     /// Creates a new instance of a Tester for the `broadcast` test at the given `project_root` by
     /// configuring the `TestCommand` with script without an endpoint
-    pub fn new_broadcast_without_endpoint(cmd: TestCommand, project_root: &Path) -> Self {
+    pub fn new_broadcast_without_endpoint(cmd: &'a mut TestCommand, project_root: &Path) -> Self {
         let target_contract = project_root.join(BROADCAST_TEST_PATH).to_string_lossy().to_string();
 
         // copy the broadcast test
@@ -256,7 +256,7 @@ impl ScriptTester {
 
     pub fn clear(&mut self) {
         init_script_cmd(
-            &mut self.cmd,
+            self.cmd,
             &self.project_root,
             &self.target_contract,
             self.endpoint.as_deref(),

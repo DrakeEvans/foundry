@@ -43,6 +43,7 @@ pub struct LinkedState {
     pub script_config: ScriptConfig,
     pub script_wallets: Wallets,
     pub build_data: LinkedBuildData,
+    pub standard_json: Option<String>,
 }
 
 /// Container for data we need for execution which can only be obtained after linking stage.
@@ -62,7 +63,7 @@ impl LinkedState {
     /// Given linked and compiled artifacts, prepares data we need for execution.
     /// This includes the function to call and the calldata to pass to it.
     pub async fn prepare_execution(self) -> Result<PreExecutionState> {
-        let Self { args, script_config, script_wallets, build_data } = self;
+        let Self { args, script_config, script_wallets, build_data, standard_json: _ } = self;
 
         let target_contract = build_data.get_target_contract()?;
 
@@ -123,6 +124,7 @@ impl PreExecutionState {
                 script_config: self.script_config,
                 script_wallets: self.script_wallets,
                 build_data: self.build_data.build_data,
+                standard_json: None,
             };
 
             return Box::pin(state.link().await?.prepare_execution().await?.execute()).await;

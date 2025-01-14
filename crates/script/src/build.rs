@@ -225,11 +225,19 @@ impl PreprocessedState {
 
         let target = target_id.ok_or_eyre("Could not find target contract")?;
 
+        // Generate standard JSON input if requested
+        let standard_json = if args.save_standard_json {
+            Some(serde_json::to_string(&project.standard_json_input(&target_path)?)?)
+        } else {
+            None
+        };
+
         Ok(CompiledState {
             args,
             script_config,
             script_wallets,
             build_data: BuildData { output, target, project_root: project.root().clone() },
+            standard_json,
         })
     }
 }
@@ -240,16 +248,18 @@ pub struct CompiledState {
     pub script_config: ScriptConfig,
     pub script_wallets: Wallets,
     pub build_data: BuildData,
+    /// The standard JSON input used for compilation, if --save-standard-json was enabled
+    pub standard_json: Option<String>,
 }
 
 impl CompiledState {
     /// Uses provided sender address to compute library addresses and link contracts with them.
     pub async fn link(self) -> Result<LinkedState> {
-        let Self { args, script_config, script_wallets, build_data } = self;
+        let Self { args, script_config, script_wallets, build_data, standard_json } = self;
 
         let build_data = build_data.link(&script_config).await?;
 
-        Ok(LinkedState { args, script_config, script_wallets, build_data })
+        Ok(LinkedState { args, script_config, script_wallets, build_data, standard_json })
     }
 
     /// Tries loading the resumed state from the cache files, skipping simulation stage.
